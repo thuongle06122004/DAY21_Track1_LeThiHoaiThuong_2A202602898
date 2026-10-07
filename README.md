@@ -1,129 +1,78 @@
-### Lab 21 — Phân tích rủi ro AI qua case study thực tế
-Họ và tên: Lê Thị Hoài Thương  
-MSSV / mã học viên: 2A202602898
-Lớp: H201
-Ngành đã chọn: Công nghệ nền bản sao số (Digital Twin Infrastructure)
+# Lab 21 — Phân tích rủi ro AI qua case study thực tế
+
+- Họ và tên: Lê Thị Hoài Thương
+- MSSV / mã học viên: 2A202602898
+- Lớp: H201
+- Ngành đã chọn: Giáo dục / AI tutor
 
 ### 1. Industry Risk Snapshot
-## Nội dung	Đánh giá của tôi và lý do
-Những tác hại chính có thể xảy ra	
-1. Sai lệch mô phỏng & Thao túng vận hành: Sai số trong mô hình AI/IoT làm mô phỏng bản sao số rò rỉ hoặc lệch khỏi hệ thống thực (VD: dự báo sai điểm gãy cơ học, cảnh báo tràn/quá tải sai) dẫn đến hỏng hóc thiết bị, ngưng trệ hạ tầng, hoặc tai nạn lao động.
-2. Rò rỉ dữ liệu hạ tầng quan trọng: Bản sao số thu thập telemetry realtime (bản đồ 3D, lưu lượng, sơ đồ mạng lưới, trạng thái vận hành); việc lộ dữ liệu này đe dọa an ninh quốc gia/doanh nghiệp.
-3. Thiên vị & Sai lệch dự báo (Algorithmic Bias): Mô hình tối ưu hóa tài nguyên phân bổ sai lệch gây bất bình đẳng dịch vụ công cho cư dân.
-Bên bị ảnh hưởng: Kỹ sư vận hành, cư dân/người tiêu dùng sử dụng dịch vụ hạ tầng, doanh nghiệp quản lý và các cơ quan nhà nước.
-Mức độ high-stakes	
-Cao (Critical/High).
-Lý do: Công nghệ bản sao số tích hợp AI tác động trực tiếp vào các hệ thống vật lý thực tế (Cyber-Physical Systems) như năng lượng, giao thông, nhà máy sản xuất, cơ sở hạ tầng đô thị. Sự cố từ AI có thể gây thiệt hại tính mạng con người, tài sản quy mô lớn và gián đoạn an ninh hạ tầng quốc gia.
 
-Dữ liệu nhạy cảm có thể được sử dụng	
-1. Dữ liệu hạ tầng trọng yếu (Critical Infrastructure Data): Bản đồ không gian 3D, sơ đồ mạng lưới điện/nước, tham số vận hành thiết bị công nghiệp.
+| Nội dung | Đánh giá của tôi và lý do |
+| --- | --- |
+| Những tác hại chính có thể xảy ra | AI tutor có thể đưa thông tin hoặc hướng dẫn học tập không chính xác, khiến người học tiếp thu kiến thức sai. Khi dùng AI để đánh giá hoặc chuẩn hóa điểm, thiên vị trong dữ liệu và thiết kế có thể làm người học mất cơ hội học tập. Ngoài ra, hệ thống có thể xử lý dữ liệu học tập, hội thoại và dữ liệu của trẻ em. Bên bị ảnh hưởng gồm học sinh/sinh viên, phụ huynh, giáo viên và cơ sở giáo dục. |
+| Mức độ high-stakes | Cao. Rủi ro tăng cao khi AI ảnh hưởng đến chấm điểm, xét tuyển, học bổng hoặc khi tương tác với học sinh nhỏ tuổi. Những quyết định này có thể tác động lâu dài đến cơ hội học tập và sức khỏe tinh thần của người học. |
+| Dữ liệu nhạy cảm có thể được sử dụng | Dữ liệu định danh như tên, tuổi, trường/lớp; dữ liệu học tập như điểm số, bài làm, lịch sử học; lịch sử hội thoại, dữ liệu hành vi và thông tin sức khỏe tinh thần do người học tự chia sẻ. Bài này không đưa dữ liệu cá nhân thật vào repo. |
+| Nhu cầu human review | Cao. Giáo viên cần kiểm tra tính chính xác của nội dung AI và phê duyệt các quyết định đánh giá quan trọng. Nhà trường/chuyên gia phù hợp cần tiếp nhận các tình huống nhạy cảm. Human review cần diễn ra khi thiết lập nguồn học liệu, trước khi dùng kết quả AI cho đánh giá chính thức và khi hệ thống phát hiện dấu hiệu khủng hoảng. |
 
+### 2. Case study 1 — Khanmigo: rủi ro câu trả lời toán học không chính xác của AI tutor
 
-2. Dữ liệu định danh & Hành vi cá nhân (PII & Behavioral Data): Vị trí GPS realtime, camera giám sát mật độ di chuyển, lịch trình sinh hoạt cư dân trong smart city/smart building.
+#### Brief Case
 
-3. Dữ liệu vận hành kinh doanh mật: Năng suất nhà máy, thông số quy trình sản xuất độc quyền.
+- **Tổ chức / sản phẩm AI:** Khan Academy — Khanmigo, công cụ AI hỗ trợ dạy và học.
+- **Thời gian, địa điểm / bối cảnh:** Từ năm 2023 tại Hoa Kỳ, trong bối cảnh Khan Academy giới thiệu Khanmigo như một công cụ hỗ trợ giáo viên và người học.
+- **AI được dùng để làm gì:** Hỗ trợ học theo hướng gợi mở, đặt câu hỏi và hướng dẫn từng bước thay vì chỉ đưa đáp án ngay cho người học.
+- **Vấn đề hoặc sự kiện đáng chú ý:** Một bài báo của *The Wall Street Journal* ghi nhận ví dụ Khanmigo có thể đưa ra hoặc bảo vệ một kết quả toán học không đúng trong quá trình thử nghiệm. Điều này cho thấy AI tutor vẫn có thể trả lời tự tin dù nội dung không chính xác; người học có thể khó phát hiện lỗi nếu thiếu kiểm tra độc lập.
+- **Số liệu có nguồn:** *The Wall Street Journal* mô tả **01 ví dụ** phản hồi toán học không đúng trong quá trình thử nghiệm Khanmigo. Đây là số lượng ví dụ được bài báo dùng để minh họa lỗi, không phải nghiên cứu đo tỷ lệ lỗi đại diện cho mọi cuộc hội thoại Khanmigo. Vì nguồn công khai được dùng ở đây không cung cấp tỷ lệ lỗi tổng quát có thể kiểm tra trong bài này, tôi không suy diễn thành phần trăm xác suất lỗi.
+- **Nguồn:** “Khan Academy’s AI Tutor Is Fast, Smart and Sometimes Completely Wrong” — *The Wall Street Journal* — 08/06/2023 — https://www.wsj.com/articles/khan-academy-ai-tutor-khanmigo-test-math-history-c38a3eb5. Thông tin về mục tiêu/sản phẩm: Khan Academy, “Khan Labs / Khanmigo” — https://www.khanacademy.org/khan-labs (truy cập ngày 07/10/2026).
+- **Phân biệt bằng chứng và nhận định:** Bằng chứng là bài báo ghi nhận một ví dụ phản hồi toán học không đúng khi thử nghiệm sản phẩm. Nhận định của tôi là phản hồi sai nhưng tự tin có thể tạo over-reliance và gây tác hại học tập. Tôi không có đủ bằng chứng công khai để kết luận tỷ lệ lỗi, quy mô người bị ảnh hưởng hoặc kiến trúc kỹ thuật cụ thể của Khanmigo tại thời điểm sự kiện.
 
-Nhu cầu human review	
-Cao (Human-in-the-loop / Human-on-the-loop).
+#### Harm Map Worksheet
 
+| Trường | Phân tích của tôi |
+| --- | --- |
+| High-risk moment | Khi học sinh dùng câu trả lời của AI tutor để hoàn thành bài tập hoặc ôn thi mà không đối chiếu sách giáo khoa/giáo viên. |
+| Stakeholder bị ảnh hưởng | Trực tiếp: học sinh có thể tiếp thu kiến thức sai. Gián tiếp: giáo viên và phụ huynh phải sửa kiến thức sai; nhà trường và Khan Academy chịu rủi ro mất niềm tin. |
+| Failure mode | Hallucination / thông tin không chính xác: AI đưa hướng dẫn hoặc kết quả toán học sai với cách diễn đạt có vẻ thuyết phục. Over-reliance xảy ra nếu người học tin câu trả lời mà không kiểm tra. |
+| Layer bắt đầu lỗi | Model hoặc grounding có thể liên quan, nhưng chưa đủ bằng chứng công khai để xác định chính xác layer bắt đầu lỗi. Về mặt kiểm soát, sản phẩm cần cơ chế đối chiếu nguồn và khuyến khích người học kiểm tra lại với giáo viên. |
+| Harm xảy ra là gì? | Nguy cơ: học sinh học sai khái niệm, làm sai bài kiểm tra hoặc mất thời gian sửa kiến thức. Nguồn trong bài xác nhận ví dụ phản hồi sai; bài không có đủ bằng chứng để khẳng định hậu quả học tập cụ thể đã xảy ra với một học sinh xác định. |
+| Harm lens | Misinformation (thông tin sai) và opportunity loss (nguy cơ giảm cơ hội học tập nếu lỗi được dùng trong đánh giá). |
+| Severity | Medium. Tác hại chủ yếu là sai lệch kiến thức và kết quả học tập; mức độ có thể cao hơn nếu lỗi ảnh hưởng đến một kỳ thi hoặc quyết định giáo dục quan trọng. |
+| Scale | Chưa đủ dữ liệu để đánh giá quy mô tác động thực tế. Khanmigo là sản phẩm giáo dục có thể tiếp cận nhiều người dùng, nhưng nguồn của case không cho số người bị ảnh hưởng bởi lỗi nêu trên. |
+| Probability | Chưa đủ dữ liệu để định lượng. Có bằng chứng về ít nhất một ví dụ lỗi, không đủ để suy ra xác suất trên toàn bộ câu hỏi hoặc toàn bộ người dùng. |
+| Frequency | Chưa đủ dữ liệu để đánh giá tần suất. Đây là một ví dụ được nguồn báo chí ghi nhận, không phải thống kê tần suất. |
+| Vì sao? | Đánh giá dựa trên bài báo nêu ở Brief Case và giới hạn bằng chứng của bài đó. Vì AI tutor có thể được người học xem là nguồn hướng dẫn đáng tin, human review và kỹ năng kiểm chứng của người học là kiểm soát quan trọng. |
 
-- Ai kiểm tra: Kỹ sư hệ thống (System Reliability Engineers), Kỹ sư vận hành (Operational Engineers), Chuyên gia an toàn dữ liệu AI.
+### 3. Case study 2 — Thuật toán chuẩn hóa điểm A-Level của Ofqual tại Anh (2020)
 
+#### Brief Case
 
-- Ở bước nào: (1) Kiểm định dữ liệu đầu vào (Data Grounding & Validation); (2) Phê duyệt các hành động tự động có tác động vật lý mạnh (Actuation Decisions); (3) Đánh giá định kỳ độ lệch mô hình (Model Drift).
+- **Tổ chức / sản phẩm AI:** Ofqual (Cơ quan Quản lý Thi cử và Kiểm định chất lượng Anh) — thuật toán chuẩn hóa điểm thi A-Level/GCSE trong đại dịch COVID-19.
+- **Thời gian, địa điểm / bối cảnh:** Tháng 08/2020 tại Vương quốc Anh, khi kỳ thi bị hủy do COVID-19 và điểm được chuẩn hóa bằng mô hình sử dụng teacher assessment cùng dữ liệu lịch sử.
+- **AI được dùng để làm gì:** Điều chỉnh/chuẩn hóa kết quả đánh giá của giáo viên để cấp điểm A-Level và GCSE trên phạm vi toàn quốc.
+- **Vấn đề hoặc sự kiện đáng chú ý:** Thuật toán gây tranh cãi vì có thể hạ kết quả của một số học sinh dựa trên thành tích lịch sử của trường. Sau phản ứng mạnh từ học sinh và công chúng, kết quả do thuật toán chuẩn hóa bị rút lại; điểm teacher assessment được sử dụng thay thế.
+- **Số liệu có nguồn:** BBC giải thích rằng 39,1% điểm A-Level dự kiến của giáo viên bị điều chỉnh xuống bởi mô hình chuẩn hóa vào năm 2020. Con số này đo tỷ lệ điểm teacher assessment bị hạ trong đợt chuẩn hóa, không phải số học sinh chắc chắn mất quyền vào đại học.
+- **Nguồn:** “A-levels and GCSEs: How did the Ofqual algorithm work and why was it withdrawn?” — BBC News — 20/08/2020 — https://www.bbc.com/news/explainers-53807730.
+- **Phân biệt bằng chứng và nhận định:** Bằng chứng là BBC tường thuật mức 39,1% teacher assessment bị hạ và việc rút lại thuật toán. Nhận định của tôi là việc sử dụng thành tích lịch sử của trường có thể tạo bất lợi cho học sinh có năng lực cá nhân cao tại trường có thành tích lịch sử thấp. Tôi không khẳng định mọi học sinh bị hạ điểm đều mất cơ hội đại học vì nguồn không xác nhận điều đó cho từng cá nhân.
 
+#### Harm Map Worksheet
 
-- Vì sao: Đảm bảo tính giải thích được (Explainability), trách nhiệm giải trình (Accountability) theo nguyên tắc Responsible AI và các quy định an toàn mạng, an toàn hạ tầng Việt Nam.
+| Trường | Phân tích của tôi |
+| --- | --- |
+| High-risk moment | Khi thuật toán chốt điểm A-Level/GCSE dùng cho tốt nghiệp và xét tuyển đại học, thay vì để kết quả đánh giá của giáo viên được giữ nguyên. |
+| Stakeholder bị ảnh hưởng | Trực tiếp: học sinh có điểm bị điều chỉnh xuống. Gián tiếp: phụ huynh, giáo viên, trường học, trường đại học và cơ quan quản lý giáo dục. |
+| Failure mode | Bias / fairness: mô hình sử dụng dữ liệu lịch sử ở cấp trường có thể không phản ánh chính xác năng lực của từng cá nhân. |
+| Layer bắt đầu lỗi | Grounding và model design. Dữ liệu/đặc trưng đầu vào ở cấp trường cùng mục tiêu chuẩn hóa hệ thống có thể tạo kết quả không công bằng cho từng học sinh. Đây là phân tích dựa trên mô tả công khai; không khẳng định chi tiết kỹ thuật ngoài những gì nguồn nêu. |
+| Harm xảy ra là gì? | Tác hại đã xảy ra: một phần điểm teacher assessment bị hạ trong đợt chuẩn hóa. Hậu quả có thể gồm lo lắng, mất niềm tin và nguy cơ mất cơ hội học tập đối với người bị ảnh hưởng. Việc mất cơ hội cụ thể của từng học sinh không được suy diễn như một sự kiện đã được nguồn xác nhận. |
+| Harm lens | Opportunity loss (mất cơ hội) và dignity loss (cảm giác bị đánh giá không công bằng). |
+| Severity | High. Điểm thi là đầu vào quan trọng cho tuyển sinh và có thể ảnh hưởng đáng kể đến lộ trình học tập của học sinh. |
+| Scale | High. BBC nêu 39,1% điểm A-Level do giáo viên dự kiến đã bị điều chỉnh xuống trong đợt công bố năm 2020; đây là tác động ở phạm vi hệ thống quốc gia. |
+| Probability | Đã xảy ra trong lần vận hành năm 2020 đối với một phần kết quả. Tuy nhiên, không đủ dữ liệu trong nguồn này để tính xác suất tác động cho từng học sinh theo nhóm trường. |
+| Frequency | Một sự kiện chuẩn hóa điểm ở quy mô toàn quốc trong bối cảnh kỳ thi năm 2020 bị hủy. Không có căn cứ từ nguồn để gọi đây là lỗi lặp lại thường xuyên qua nhiều kỳ thi. |
+| Vì sao? | BBC mô tả tỷ lệ điều chỉnh xuống và việc chính sách bị rút lại. Case cho thấy trong quyết định giáo dục high-stakes, cần human review, cơ chế khiếu nại hiệu quả và đánh giá fairness trước khi triển khai toàn hệ thống. |
 
-### 2. Case study 1 — Tai nạn xe tự hành Uber ATG tại Tempe, Arizona (2018)
-Brief Case
-Tổ chức / sản phẩm AI: Uber Advanced Technologies Group (Uber ATG) — Hệ thống tự lái cho xe Volvo XC90.
+### Tự kiểm tra trước khi nộp
 
-Thời gian, địa điểm / bối cảnh: Ngày 18/03/2018 tại Tempe, Arizona, Mỹ. Đêm khuya trên đường công cộng.
-
-AI được dùng để làm gì: Nhận diện vật thể (Object Detection & Classification), dự báo quỹ đạo di chuyển (Trajectory Prediction) và tự động phanh/tránh vật cản.
-
-Vấn đề hoặc sự kiện đáng chú ý: Xe tự lái Uber ở chế độ tự động đã đâm vào người đi bộ qua đường (bà Elaine Herzberg) khiến nạn nhân tử vong. Đây là vụ tai nạn tử vong đầu tiên do xe tự hành gây ra đối với người đi bộ trên đường công cộng.
-
-Số liệu có nguồn:
-
-Xe phát hiện người đi bộ trước va chạm 5.6 giây, nhưng liên tục phân loại sai vật thể (từ vật không xác định -> xe tải -> xe đạp -> vật thể tĩnh) và thay đổi dự báo quỹ đạo.
-
-Phanh khẩn cấp tự động bị Uber vô hiệu hóa để tránh hiện tượng xe phanh giật cục (erratic braking), tạo độ trễ trút trách nhiệm sang con người 1 giây. Người giám sát an toàn ngồi trên xe chỉ nhận cảnh báo 1.2 giây trước khi va chạm và can thiệp phanh 0.2 giây sau va chạm (quá muộn). (Nguồn: Báo cáo NTSB/HAR-19/03).
-
-# Nguồn:
-Tên tài liệu: NTSB Collision Between a Self-Driving Car and a Pedestrian, Tempe, Arizona, March 18, 2018 (Accident Report NTSB/HAR-19/03).
-Đơn vị/tác giả: Ủy ban An toàn Giao thông Quốc gia Mỹ (National Transportation Safety Board - NTSB).
-Ngày công bố: 19/11/2019.
-URL: https://www.ntsb.gov/investigations/AccidentReports/Reports/HAR1903.pdf
-Phân biệt bằng chứng và nhận định:
-Bằng chứng (Nguồn xác nhận): Log hệ thống cho thấy thuật toán re-classification liên tục reset bộ nhớ dự báo quỹ đạo; phanh tự động bị ngắt do thiết kế logic của phần mềm Uber; tài xế ngồi lái bị xao nhãng do xem điện thoại.
-
-Nhận định / Suy luận của học viên: Uber đã chấp nhận rủi ro an toàn để ưu tiên trải nghiệm vận hành êm ái (smooth ride); tổ chức thiếu văn hóa an toàn và quy trình Human-in-the-loop bị tê liệt do giả định con người luôn phản ứng kịp thời trong 1 giây.
-
-Harm Map Worksheet
-Trường	Phân tích của tôi
-High-risk moment	Khi xe di chuyển tốc độ cao (43 mph) trong đêm, AI phát hiện vật thể không xác định băng qua đường nhưng không xác định đúng bản chất người đi bộ đẩy xe đạp.
-Stakeholder bị ảnh hưởng	
-Trực tiếp: Nạn nhân Elaine Herzberg (tử vong), tài xế giám sát an toàn trên xe (chịu trách nhiệm hình sự/tâm lý).
-Gián tiếp: Uber, ngành công nghiệp xe tự hành, công chúng và cơ quan quản lý giao thông.
-
-Failure mode	Sensor Fusion & Classification Flaw: Thuật toán không thể phân loại đúng vật thể ngoài tập dữ liệu huấn luyện (người qua đường không đúng vạch kẻ đường đẩy xe đạp); Logics Reset: Mỗi lần đổi nhãn phân loại, hệ thống lại xóa lịch sử và tính toán lại quỹ đạo từ đầu.
-Layer bắt đầu lỗi	
-Safety & Logic Layer kết hợp Grounding Layer.
-
-- Lý do: Model phát hiện điểm ảnh, nhưng Grounding Layer gán nhãn sai/chập chờn. Safety Layer bị can thiệp thô bạo (chủ động tắt tính năng phanh khẩn cấp tự động của Volvo mà không có cơ chế phanh dự phòng mềm).
-
-Harm xảy ra là gì?	Tác hại đã xảy ra (Actual Harm): Thiệt hại tính mạng con người (1 người tử vong); mất niềm tin nghiêm trọng của xã hội vào công nghệ tự hành; dự án Uber ATG bị đình chỉ và bán lại sau đó.
-Harm lens	Physical Safety Harm (Tác hại an toàn thể chất) & Institutional/Trust Harm (Tác hại lòng tin công cộng).
-Severity	Critical (Cực kỳ nghiêm trọng): Dẫn đến tử vong.
-Scale	Vừa và lớn (Medium-Large): Tác động trực tiếp 1 nạn nhân, nhưng tác động gián tiếp làm đóng băng toàn bộ hoạt động thử nghiệm xe tự hành trên toàn thế giới trong nhiều tháng.
-Probability	Cao (High) trong điều kiện thử nghiệm thực tế khi không có cơ chế dừng an toàn (Fail-safe) thỏa đáng.
-Frequency	Thấp (Low): Sự cố tử vong hiếm gặp trên tổng số km lái thử, nhưng hệ quả mang tính thảm họa.
-Vì sao?	Đánh giá dựa trên báo cáo chính thức NTSB/HAR-19/03. Sự cố xảy ra do sự đứt gãy ở cả 3 trụ cột: AI Ethics (coi thường sinh mệnh người đi đường khi tắt phanh tự động), AI Safety (thiếu Fail-safe & Redundancy trong kiến trúc phần mềm), và Responsible AI (trút trách nhiệm vô lý lên tài xế giám sát trong khoảng thời gian phản ứng 1 giây).
-
-### 3. Case study 2 — Sự cố thiên vị phân bổ hạ tầng dịch vụ công của Amazon Prime Free Same-Day Delivery (2016)
-Brief Case
-Tổ chức / sản phẩm AI: Amazon — Thuật toán tối ưu hóa vùng phủ sóng giao hàng trong ngày (Prime Free Same-Day Delivery).
-Thời gian, địa điểm / bối cảnh: Tháng 04/2016, tại các đô thị lớn ở Mỹ (Boston, New York, Chicago, Atlanta, Washington D.C., v.v.).
-AI được dùng để làm gì: Tự động hóa phân tích dữ liệu mật độ hội viên Prime, chi phí kho vận và khoảng cách để khoanh vùng (ZIP code) cung cấp dịch vụ giao hàng siêu tốc.
-Vấn đề hoặc sự kiện đáng chú ý: Thuật toán AI của Amazon vô tình loại bỏ các khu vực tập trung đông người da đen sinh sống ra khỏi bản đồ dịch vụ Same-Day Delivery, ngay cả khi các khu vực đó nằm ngay trung tâm thành phố và xung quanh đều được bao phủ.
-Số liệu có nguồn:
-Tại Atlanta, 12 mã ZIP bị loại trừ có tỷ lệ người da đen trung bình là 75%, trong khi các mã ZIP được giao hàng có tỷ lệ người da trắng là 75%.
-Tại Boston, khu vực Roxbury (đa số cư dân da đen) hoàn toàn bị bỏ qua, trong khi các khu vực giàu có hơn xung quanh (đa số cư dân da trắng) được phục vụ 100%. (Nguồn: Điều tra độc lập từ Bloomberg News).
-Nguồn:
-Tên tài liệu: Racial Discrimination in Same-Day Delivery: Amazon’s Free Same-Day Delivery Excludes Black Neighborhoods.
-Đơn vị/tác giả: Bloomberg News (David Ingold & Spencer Soper).
-Ngày công bố: 21/04/2016.
-URL: https://www.bloomberg.com/graphics/2016-amazon-same-day/
-Phân biệt bằng chứng và nhận định:
-
-Bằng chứng (Nguồn xác nhận): Phân tích dữ liệu bản đồ phân bố mã ZIP của Bloomberg xác nhận sự lệch pha chủng tộc rõ rệt trong các vùng được chọn phục vụ; Amazon khẳng định thuật toán chỉ tính đến chi phí logistic, mật độ Prime và hạ tầng kho bãi chứ không sử dụng thuộc tính chủng tộc (Race).
-
-Nhận định / Suy luận của học viên: Thuật toán sử dụng các biến thay thế (Proxy variables) như mã ZIP, thu nhập trung bình, lịch sử tiêu dùng — vốn mang tính định kiến lịch sử (Historical bias) — dẫn đến phân biệt đối xử gián tiếp (Disparate Impact).
-
-Harm Map Worksheet
-Trường	Phân tích của tôi
-High-risk moment	Khi mô hình Machine Learning thực hiện phân vùng kinh doanh (Geofencing) tự động để triển khai hạ tầng dịch vụ dựa trên tối ưu hóa lợi nhuận.
-Stakeholder bị ảnh hưởng	
-Trực tiếp: Cư dân tại các khu vực thiểu số/da đen bị tước bỏ quyền truy cập dịch vụ bình đẳng.
-Gián tiếp: Thương hiệu Amazon, cộng đồng xã hội, cơ quan quản lý phân biệt đối xử.
-
-Failure mode	Algorithmic Bias / Disparate Impact: Thuật toán không chứa biến chủng tộc trực tiếp nhưng bị nhiễm proxy bias từ dữ liệu kinh tế - xã hội lịch sử.
-Layer bắt đầu lỗi	
-Grounding & Data Layer kết hợp Model Layer.
-
-- Lý do: Dữ liệu đầu vào phản ánh sự bất bình đẳng lịch sử về hạ tầng và thu nhập; Model tối ưu hóa hàm mục tiêu đơn miền (Lợi nhuận/Chi phí) mà bỏ qua tham số công bằng (Fairness constraint).
-Harm xảy ra là gì?	Tác hại đã xảy ra (Actual Harm): Bất bình đẳng trong truy cập hạ tầng dịch vụ thương mại; chia rẽ kỹ thuật số (Digital divide); củng cố định kiến phân biệt đối xử kinh tế - xã hội.
-Harm lens	Societal & Fairness Harm (Tác hại bất bình đẳng xã hội) & Discriminatory Harm (Tác hại phân biệt đối xử).
-Severity	Medium-High (Trung bình - Cao): Không gây thiệt hại mạng người ngay lập tức nhưng gây tổn hại nghiêm trọng về mặt xã hội, dân quyền và uy tín tổ chức.
-Scale	Rất lớn (Large): Tác động đến hàng triệu cư dân tại nhiều đại đô thị nước Mỹ.
-Probability	Rất cao (Very High) khi triển khai các mô hình tối ưu hóa kinh tế thuần túy mà không kiểm soát thiên vị vị trí địa lý.
-Frequency	Thường xuyên (Continuous): Xảy ra liên tục trên mọi truy vấn của người dùng ở khu vực bị loại trừ cho đến khi bị phát hiện và can thiệp thủ công.
-Vì sao?	
-Đối chiếu Luật AI & Chuẩn mực AI Ethics:
-1. Thiếu tính Công bằng (Fairness): AI vô tình tạo ra sự phân biệt đối xử gián tiếp.
-2. Thiếu đánh giá tác động xã hội (Algorithmic Impact Assessment): Amazon đã không kiểm thử tác hại phân biệt trước khi tung dịch vụ ra diện rộng.
-
-
-3. Chiếu theo Luật AI Việt Nam (Khoản về Hệ thống AI rủi ro cao & Nguyên tắc Đạo đức AI): Các hệ thống AI phân bổ tài nguyên/dịch vụ thiết yếu mang tính hạ tầng bắt buộc phải trải qua kiểm toán độ thiên vị (Bias Audit) và tuân thủ nguyên tắc không phân biệt đối xử, đảm bảo tính tiếp cận bình đẳng cho mọi đối tượng.
+- Tôi đã chọn đúng một ngành và phân tích 2 case khác nhau trong ngành Giáo dục / AI tutor.
+- Mỗi case có Brief Case, ít nhất một số liệu hoặc bằng chứng có nguồn, URL nguồn và Harm Map đủ 11 trường.
+- Tôi đã phân biệt điều nguồn xác nhận với phần nhận định, đồng thời nêu giới hạn khi bằng chứng chưa đủ.
+- Tôi không đưa dữ liệu cá nhân thật, hội thoại riêng hoặc thông tin nhạy cảm vào bài.
